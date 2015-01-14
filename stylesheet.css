@@ -1,0 +1,22 @@
+﻿.heading{
+    color: #FFFF99;
+    font-size: 80pt;
+}
+
+body {
+    background-color: darkslategray;
+}
+
+.game-cell{
+
+}
+
+.active-cell{
+    width: inherit;
+    height: inherit;
+}
+
+.dead-cell{
+    width: inherit;
+    height: inherit;
+}
