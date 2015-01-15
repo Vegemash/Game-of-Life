@@ -1,5 +1,5 @@
 ﻿var game_grid = new Array();
-var game_grid_size = {x: 50, y: 50};
+var game_grid_size = {x: 25, y: 25};
 var alive_cell_pic = "../Game of life/alive_small.png";
 var dead_cell_pic = "../Game of life/dead2.png";
 var bRunSim = false;
@@ -13,13 +13,11 @@ var main = function () {
 
     //Kill/Revive cells on click
     $('.game-cell').click(function () {
-        $(this).children().each(function () {
-            if ($(this).hasClass('active-cell')) {
-                kill(this);
-            } else {
-                revive(this);
-            }
-        });
+        if ($(this).hasClass('active-cell')) {
+            kill(this);
+        } else {
+            revive(this);
+        }
     });
     //Run update
     setInterval(update, 200);
@@ -27,22 +25,23 @@ var main = function () {
 
 var spawnGrid = function () {
     //Set grid dimensions
-    var grid_size = { x: 50, y: 50 };
-    var cell_size = { x: 10, y: 10 };
+    var cell_size = { x: 500 / game_grid_size.x, y: 500 / game_grid_size.x };
 
     //Set the offset to center the grid
     var top_left = { x: 0, y: 0 };
-    top_left.x = $(window).width() / 2 - (grid_size.x * cell_size.x)/2;
-    top_left.y = $(window).height() / 2 - (grid_size.y * cell_size.y) / 2;
+    top_left.x = $(window).width() / 2 - (game_grid_size.x * cell_size.x) / 2;
+    top_left.y = $(window).height() / 2 - (game_grid_size.y * cell_size.y) / 2;
 
    //get the grid
     var grid = $('.game-grid');
-    for (var x = 0; x < grid_size.x; x++) {
-        for (var y = 0; y < grid_size.y; y++) {
+    for (var x = 0; x < game_grid_size.x; x++) {
+        for (var y = 0; y < game_grid_size.y; y++) {
             //create new cell
-            var new_cell = $('<div class=\"game-cell\"><img class=\"dead-cell"></div>');
+            var new_cell = $('<img>');
+            new_cell.addClass("game-cell");
+            new_cell.addClass("dead-cell");
             //set the picture
-            new_cell.children().first().attr("src", dead_cell_pic);
+            new_cell.attr("src", dead_cell_pic);
             //position the cell
             new_cell.css({
                 position: 'absolute',
@@ -80,11 +79,11 @@ var update = function () {
                             || dx >= game_grid_size.x || dx < 0)
                             continue;
 
-                        if ($(game_grid[toIndex(dx, dy)]).children().first().hasClass('active-cell'))
+                        if ($(game_grid[toIndex(dx, dy)]).hasClass('active-cell'))
                             ++alive_neighbours;
                     }// <-- Dat big O() yo :)
                 }
-                var cell = game_grid[toIndex(x, y)].children()[0];
+                var cell = game_grid[toIndex(x, y)][0];
                 if (alive_neighbours < 2 || alive_neighbours > 3)
                     toKill.push(cell);
                 else if (alive_neighbours == 3)

@@ -8,15 +8,18 @@ body {
 }
 
 .game-cell{
-
 }
 
 .active-cell{
     width: inherit;
     height: inherit;
+    /*rect(top, right, bottom, left)*/
+    clip: rect(0, 50, 50, 0);
 }
 
 .dead-cell{
     width: inherit;
     height: inherit;
+    /*rect(top, right, bottom, left)*/
+    clip: rect(100, 50, 150, 0);
 }
