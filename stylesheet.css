@@ -4,22 +4,32 @@
 }
 
 body {
-    background-color: darkslategray;
+    background-color: black;
 }
 
 .game-cell{
+    position: absolute;
+    background-image: url("alive_dead_small.png");
+    background-repeat: no-repeat;
 }
 
 .active-cell{
-    width: inherit;
-    height: inherit;
-    /*rect(top, right, bottom, left)*/
-    clip: rect(0, 50, 50, 0);
+    background-position: 0px 0px;
 }
 
 .dead-cell{
-    width: inherit;
-    height: inherit;
-    /*rect(top, right, bottom, left)*/
-    clip: rect(100, 50, 150, 0);
+    background-position: 0% 50% ;
+}
+
+/*Cell that was never alive*/
+.unalive-cell {
+    background-position: 0% 100% ;
+}
+
+.start-stop{
+    color: mediumvioletred;
+    width: 250px;
+    height: 50px;
+    background-color: lightgoldenrodyellow;
+    font-size: 40px;
 }

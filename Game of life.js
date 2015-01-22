@@ -1,5 +1,5 @@
 ﻿var game_grid = new Array();
-var game_grid_size = {x: 25, y: 25};
+var game_grid_size = {x: 30, y: 30};
 var alive_cell_pic = "../Game of life/alive_small.png";
 var dead_cell_pic = "../Game of life/dead2.png";
 var bRunSim = false;
@@ -7,7 +7,7 @@ var bRunSim = false;
 var main = function () {
     spawnGrid();
 
-    $('.start-stop-btn').click(function () {
+    $('.start-stop').click(function () {
         bRunSim = !bRunSim;
     });
 
@@ -25,31 +25,35 @@ var main = function () {
 
 var spawnGrid = function () {
     //Set grid dimensions
-    var cell_size = { x: 500 / game_grid_size.x, y: 500 / game_grid_size.x };
+    var grid_px_size = 500;
+    var img_width = 50;
+    var cell_size = {
+        x: grid_px_size / game_grid_size.x,
+        y: grid_px_size / game_grid_size.x
+    };
+    var background_scale = cell_size.x / img_width;
 
     //Set the offset to center the grid
     var top_left = { x: 0, y: 0 };
-    top_left.x = $(window).width() / 2 - (game_grid_size.x * cell_size.x) / 2;
-    top_left.y = $(window).height() / 2 - (game_grid_size.y * cell_size.y) / 2;
-
-   //get the grid
     var grid = $('.game-grid');
+    top_left.x = -(game_grid_size.x * cell_size.x) / 2;
+    top_left.y = 0;//grid.height() / 2 - (game_grid_size.y * cell_size.y) / 2;
+   //get the grid
     for (var x = 0; x < game_grid_size.x; x++) {
         for (var y = 0; y < game_grid_size.y; y++) {
             //create new cell
             var new_cell = $('<img>');
             new_cell.addClass("game-cell");
-            new_cell.addClass("dead-cell");
-            //set the picture
-            new_cell.attr("src", dead_cell_pic);
             //position the cell
             new_cell.css({
-                position: 'absolute',
+               // position: 'absolute',
                 width: cell_size.x,
-                height: cell_size.y,   
-                top: top_left.y + cell_size.y * y,
-                left: top_left.x + cell_size.y * x
+                height: cell_size.y,
+                'margin-top': top_left.y + cell_size.y * y,
+                'margin-left': top_left.x + cell_size.y * x,
+                'background-size': (cell_size.x ,cell_size.y)
             });
+            new_cell.addClass("unalive-cell");
             //Add the cell to the DOM and the grid
             grid.append(new_cell);
             game_grid.push(new_cell);
@@ -102,19 +106,20 @@ function kill(cell) {
     if (!$(cell).hasClass('active-cell'))
         return;
 
-    cell.src = dead_cell_pic;
     $(cell).removeClass('active-cell');
     $(cell).addClass('dead-cell');
 }
 
 //Switch a cell from dead to alive
 var revive = function (cell) {
-    if (!$(cell).hasClass('dead-cell'))
-        return;
+    if ($(cell).hasClass('dead-cell')) {
+        $(cell).removeClass('dead-cell');
+        $(cell).addClass('active-cell');
+    }else if($(cell).hasClass('unalive-cell')){
+        $(cell).removeClass('unalive-cell');
+        $(cell).addClass('active-cell');
+    }
 
-    cell.src = alive_cell_pic;
-    $(cell).removeClass('dead-cell');
-    $(cell).addClass('active-cell');
 }
 
 // (x, y) to index
